@@ -14,6 +14,26 @@ github "cntrump/SFRefresh" "master"
 
 ## Using in your project
 
+#### Swift
+
+```swift
+import SFOverlayWindow
+```
+
+#### Objc
+
+```objc
+@import SFOverlayWindow;
+```
+
+enable `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES` in your project settings
+
+if your project using Objc++
+
+add `-fmodules -fcxx-modules` to `OTHER_CPLUSPLUSFLAGS` for your project settings
+
+#### Example
+
 Swizzling `UIScrollView` in `func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool`.
 
 ```swift
