@@ -17,13 +17,13 @@ github "cntrump/SFRefresh" "master"
 #### Swift
 
 ```swift
-import SFOverlayWindow
+import SFRefresh
 ```
 
 #### Objc
 
 ```objc
-@import SFOverlayWindow;
+@import SFRefresh;
 ```
 
 enable `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES` in your project settings
