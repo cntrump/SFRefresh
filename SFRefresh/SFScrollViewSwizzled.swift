@@ -139,7 +139,7 @@ public extension UIScrollView {
         }
     }
 
-    @objc func SFwillMoveToSuperview(toSuperview newSuperview: UIView?) {
+    @objc dynamic func SFwillMoveToSuperview(toSuperview newSuperview: UIView?) {
         if newSuperview == nil {
             SFrefreshView?.removeRefreshKVO()
             SFinfinitingView?.removeRefreshKVO()
@@ -148,7 +148,7 @@ public extension UIScrollView {
         self.SFwillMoveToSuperview(toSuperview: newSuperview)
     }
 
-    @objc func SFdidMoveToSuperview() {
+    @objc dynamic func SFdidMoveToSuperview() {
         if self.superview != nil {
             SFrefreshView?.addRefreshKVO()
             SFinfinitingView?.addRefreshKVO()
@@ -157,7 +157,7 @@ public extension UIScrollView {
         self.SFdidMoveToSuperview()
     }
 
-    @objc func SFsetBounds(bounds: CGRect) {
+    @objc dynamic func SFsetBounds(bounds: CGRect) {
         self.SFsetBounds(bounds: bounds)
 
         if let refreshView = SFrefreshView {
@@ -177,25 +177,25 @@ public extension UIScrollView {
         }
     }
 
-    @objc func SFaddSubview(_ view: UIView) {
+    @objc dynamic func SFaddSubview(_ view: UIView) {
         self.SFaddSubview(view)
 
         self.keepRefreshViewPosition()
     }
 
-    @objc func SFinsertSubview(_ view: UIView, at index: Int) {
+    @objc dynamic func SFinsertSubview(_ view: UIView, at index: Int) {
         self.SFinsertSubview(view, at: index)
 
         self.keepRefreshViewPosition()
     }
 
-    @objc func SFinsertSubview(_ view: UIView, aboveSubview siblingSubview: UIView) {
+    @objc dynamic func SFinsertSubview(_ view: UIView, aboveSubview siblingSubview: UIView) {
         self.SFinsertSubview(view, aboveSubview: siblingSubview)
 
         self.keepRefreshViewPosition()
     }
 
-    @objc func SFinsertSubview(_ view: UIView, belowSubview siblingSubview: UIView) {
+    @objc dynamic func SFinsertSubview(_ view: UIView, belowSubview siblingSubview: UIView) {
         self.SFinsertSubview(view, belowSubview: siblingSubview)
 
         self.keepRefreshViewPosition()
