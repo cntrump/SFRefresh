@@ -121,8 +121,10 @@ public class SFRefreshView: UIView, SFRefresh  {
                 state = percent < 1 ? .ready : .triggered
                 percentDidChange(percent, state: state, isTracking: scrollView!.isTracking)
             } else {
-                state = .inactive
-                didReset()
+                if state != .inactive {
+                    state = .inactive
+                    didReset()
+                }
             }
         }
     }
