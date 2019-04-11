@@ -9,21 +9,16 @@
 import UIKit
 import Lottie
 
-@objc public enum LOTRefreshStyle: Int {
-    case green
-    case gray
-}
-
 public class LOTRefreshView: SFRefreshView {
-    var aniView: AnimationView!
-    let r: CGFloat = 16.0 / 104.0
-    let b: CGFloat = 62.0 / 330.0
+    private var aniName: String!
+    private var aniView: AnimationView!
+    private let loopAt: CGFloat = 62.0 / 330.0
 
     @objc public init(name: String) {
         super.init(frame: .zero)
 
+        aniName = name
         aniView = AnimationView()
-        aniView.animation = Animation.filepath(aniPath(name: name))
         aniView.backgroundBehavior = .pauseAndRestore
         self.contentView.addSubview(aniView)
         aniView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,18 +53,15 @@ public class LOTRefreshView: SFRefreshView {
     }
 
     public override func percentDidChange(_ value: CGFloat, state: SFRefreshState, isTracking: Bool) {
-        guard r <= value else {
-            return
+        if aniView.animation == nil {
+            aniView.animation = Animation.filepath(aniPath(name: aniName))
         }
 
-        let h: CGFloat = 104.0 - 16.0
-        let p: CGFloat = (104.0 * value - 104 * r) / h
-
-        aniView.currentProgress = p * b
+        aniView.currentProgress = value * loopAt
     }
 
     public override func didRefresh() {
-        aniView.play(fromProgress: b, toProgress: 1, loopMode: .loop)
+        aniView.play(fromProgress: loopAt, toProgress: 1, loopMode: .loop)
     }
 
     public override func didFinish() {
@@ -77,6 +69,9 @@ public class LOTRefreshView: SFRefreshView {
     }
 
     public override func didReset() {
-        aniView.stop()
+        if aniView.animation != nil {
+            aniView.stop()
+            aniView.animation = nil
+        }
     }
 }

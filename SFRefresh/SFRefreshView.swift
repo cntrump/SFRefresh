@@ -165,12 +165,13 @@ public class SFRefreshView: UIView, SFRefresh  {
 
         let infiniting = scrollView!.SFinfinitingView != nil && scrollView!.SFinfinitingView?.state != .ready
         if enable && state != .refreshing && state != .finished && !infiniting {
-            if percent >= 0 {
+            if percent > 0 {
                 percent = min(1.0, percent)
                 state = percent < 1 ? .ready : .triggered
                 percentDidChange(percent, state: state, isTracking: scrollView!.isTracking)
             } else {
                 state = .inactive
+                didReset()
             }
         }
     }
