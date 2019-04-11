@@ -188,6 +188,10 @@ public class SFRefreshView: UIView, SFRefresh  {
     }
 
     private func triggerRefresh() {
+        guard state != .refreshing else {
+            return
+        }
+
         state = .refreshing
         triggerTime = mach_absolute_time()
 
