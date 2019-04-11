@@ -15,6 +15,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Refresh", style: .plain, target: self, action: #selector(testRefresh(sender:)))
+
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "WebView", style: .plain, target: self, action: #selector(testWebView(sender:)))
 
         tableView = LOTTableView(frame: self.view.bounds, style: .plain)
@@ -31,6 +33,10 @@ class ViewController: UIViewController {
             NSLayoutConstraint(item: tableView!, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: tableView!, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0)
             ])
+    }
+
+    @objc func testRefresh(sender: UIBarButtonItem) {
+        tableView.SFrefreshView?.startRefresh()
     }
 
     @objc func testWebView(sender: UIBarButtonItem) {

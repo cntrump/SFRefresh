@@ -32,7 +32,6 @@ public class SFRefreshView: UIView, SFRefresh  {
 
     internal weak var scrollView: UIScrollView?
     private var KVOadded: Bool = false
-    private var autoTriggered = false
     private var triggerTime: UInt64 = 0
 
     @objc override init(frame: CGRect) {
@@ -107,56 +106,8 @@ public class SFRefreshView: UIView, SFRefresh  {
             return
         }
 
-        if state == .triggered && (!scrollView!.isTracking || autoTriggered) {
-            state = .refreshing
-
-            triggerTime = mach_absolute_time()
-
-            if autoTriggered {
-                autoTriggered = false
-            }
-
-            var inset = scrollView!.contentInset
-            let top = inset.top
-            inset.top += heightOfcontentView
-
-            // exec on next runloop
-            DispatchQueue.main.async { [weak self] in
-                UIView.animate(withDuration: 0.25, animations: {
-                    self?.scrollView?.contentInset = inset
-                }) { (Bool) in
-                    let completion = {
-                        guard self != nil else {
-                            return
-                        }
-
-                        let delay = self!.delaySinceNow()
-
-                        // exec on next runloop
-                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                            guard self?.scrollView != nil else {
-                                return
-                            }
-                            
-                            self?.state = .finished
-                            self?.didFinish()
-                            
-                            inset.top = top
-
-                            UIView.animate(withDuration: 0.25, animations: {
-                                self?.scrollView?.contentInset = inset
-                            }) { (Bool) in
-                                self?.state = .ready
-                                self?.didReset()
-                            }
-                        }
-                    }
-
-                    self?.didRefresh()
-                    self?.refreshHandler?(completion)
-                }
-            }
-
+        if state == .triggered && !scrollView!.isTracking {
+            triggerRefresh()
             return
         }
 
@@ -180,14 +131,21 @@ public class SFRefreshView: UIView, SFRefresh  {
         DispatchQueue.main.async { [weak self] in
             let infiniting = self?.scrollView?.SFinfinitingView != nil && self?.scrollView?.SFinfinitingView?.state != .ready
             if let scrollView = self?.scrollView, self?.state != .refreshing && self?.state != .finished && !infiniting {
-                self?.state = .triggered
-                self?.autoTriggered = true
+                self?.state = .ready
                 var offset = scrollView.contentOffset
                 let y = self!.heightOfcontentView
                 offset.y = -y - scrollView.top
 
-                UIView.animate(withDuration: 0.25) {
-                    self?.scrollView?.contentOffset = offset
+                self?.percentDidChange(0.01, state: .ready, isTracking: scrollView.isTracking)
+
+                UIView.animate(withDuration: 0.25, animations: {
+                    if let scrollView = self?.scrollView {
+                        self?.percentDidChange(1, state: .ready, isTracking: scrollView.isTracking)
+                        scrollView.contentOffset = offset
+                    }
+                }) { (Bool) in
+                    self?.state = .triggered
+                    self?.triggerRefresh()
                 }
             }
         }
@@ -225,5 +183,51 @@ public class SFRefreshView: UIView, SFRefresh  {
     }
 
     public func didReset() {
+    }
+
+    private func triggerRefresh() {
+        state = .refreshing
+        triggerTime = mach_absolute_time()
+
+        var inset = scrollView!.contentInset
+        let top = inset.top
+        inset.top += heightOfcontentView
+
+        // exec on next runloop
+        DispatchQueue.main.async { [weak self] in
+            UIView.animate(withDuration: 0.25, animations: {
+                self?.scrollView?.contentInset = inset
+            }) { (Bool) in
+                let completion = {
+                    guard self != nil else {
+                        return
+                    }
+
+                    let delay = self!.delaySinceNow()
+
+                    // exec on next runloop
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                        guard self?.scrollView != nil else {
+                            return
+                        }
+
+                        self?.state = .finished
+                        self?.didFinish()
+
+                        inset.top = top
+
+                        UIView.animate(withDuration: 0.25, animations: {
+                            self?.scrollView?.contentInset = inset
+                        }) { (Bool) in
+                            self?.state = .ready
+                            self?.didReset()
+                        }
+                    }
+                }
+
+                self?.didRefresh()
+                self?.refreshHandler?(completion)
+            }
+        }
     }
 }
