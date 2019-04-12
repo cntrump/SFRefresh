@@ -34,6 +34,7 @@ public class SFInfinitingView: UIView, SFRefresh {
 
     @objc public override init(frame: CGRect) {
         super.init(frame: frame)
+        isUserInteractionEnabled = false
         contentView = UIView(frame: self.bounds)
         self.addSubview(contentView)
     }
@@ -82,6 +83,9 @@ public class SFInfinitingView: UIView, SFRefresh {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
+
+        let y = scrollView!.contentSize.height
+        frame = CGRect(x: 0, y: y, width: scrollView!.frame.width, height: heightOfcontentView)
 
         if state == .triggered {
             state = .infiniting

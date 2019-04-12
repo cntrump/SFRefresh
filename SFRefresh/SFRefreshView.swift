@@ -36,6 +36,7 @@ public class SFRefreshView: UIView, SFRefresh  {
 
     @objc override init(frame: CGRect) {
         super.init(frame: frame)
+        isUserInteractionEnabled = false
         contentView = UIView(frame: self.bounds)
         self.addSubview(contentView)
     }
