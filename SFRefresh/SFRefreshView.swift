@@ -133,7 +133,7 @@ public class SFRefreshView: UIView, SFRefresh  {
     }
 
     @objc public func startRefresh() {
-        guard state != .triggered, state != .refreshing else {
+        guard state != .triggered, state != .refreshing, state != .finished else {
             return
         }
 
@@ -141,7 +141,7 @@ public class SFRefreshView: UIView, SFRefresh  {
 
         DispatchQueue.main.async { [weak self] in
             let infiniting = self?.scrollView?.SFinfinitingView != nil && self?.scrollView?.SFinfinitingView?.state != .ready
-            guard let scrollView = self?.scrollView, self?.state != .refreshing && self?.state != .finished && !infiniting else {
+            guard let scrollView = self?.scrollView, self?.state != .refreshing, self?.state != .finished, !infiniting else {
                 return
             }
 
