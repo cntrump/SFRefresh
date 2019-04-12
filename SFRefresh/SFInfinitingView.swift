@@ -102,7 +102,7 @@ public class SFInfinitingView: UIView, SFRefresh {
                     let completion = {
                         // exec on next runloop
                         DispatchQueue.main.async {
-                            guard self?.scrollView != nil else {
+                            guard self?.scrollView != nil, self?.state == .infiniting else {
                                 return
                             }
 
@@ -135,10 +135,12 @@ public class SFInfinitingView: UIView, SFRefresh {
         let scrollDown = newValue.y > oldValue.y
 
         let refresing = scrollView!.SFrefreshView != nil && scrollView!.SFrefreshView?.state != .inactive
-        if enable && scrollDown && state != .infiniting && state != .finished && !refresing {
-            let atBottom = scrollView!.contentSize.height - newValue.y <= scrollView!.frame.height
-            state = atBottom ? .triggered : .ready
+        guard enable && scrollDown && state != .infiniting && state != .finished && !refresing else {
+            return
         }
+
+        let atBottom = scrollView!.contentSize.height - newValue.y <= scrollView!.frame.height
+        state = atBottom ? .triggered : .ready
     }
 
     @objc public func stopInfiniting() {

@@ -116,39 +116,45 @@ public class SFRefreshView: UIView, SFRefresh  {
         var percent = -(newValue.y + scrollView!.top) / heightOfcontentView
 
         let infiniting = scrollView!.SFinfinitingView != nil && scrollView!.SFinfinitingView?.state != .ready
-        if enable && state != .refreshing && state != .finished && !infiniting {
-            if percent > 0 {
-                percent = min(1.0, percent)
-                state = percent < 1 ? .ready : .triggered
-                percentDidChange(percent, state: state, isTracking: scrollView!.isTracking)
-            } else {
-                if state != .inactive {
-                    state = .inactive
-                    didReset()
-                }
+        guard enable && state != .refreshing && state != .finished && !infiniting else {
+            return
+        }
+
+        if percent > 0 {
+            percent = min(1.0, percent)
+            state = percent < 1 ? .ready : .triggered
+            percentDidChange(percent, state: state, isTracking: scrollView!.isTracking)
+        } else {
+            if state != .inactive {
+                state = .inactive
+                didReset()
             }
         }
     }
 
     @objc public func startRefresh() {
+        guard state != .triggered, state != .refreshing else {
+            return
+        }
+
+        state = .triggered
+
         DispatchQueue.main.async { [weak self] in
             let infiniting = self?.scrollView?.SFinfinitingView != nil && self?.scrollView?.SFinfinitingView?.state != .ready
-            if let scrollView = self?.scrollView, self?.state != .refreshing && self?.state != .finished && !infiniting {
-                self?.state = .ready
-                var offset = scrollView.contentOffset
-                let y = self!.heightOfcontentView
-                offset.y = -y - scrollView.top
+            guard let scrollView = self?.scrollView, self?.state != .refreshing && self?.state != .finished && !infiniting else {
+                return
+            }
 
-                self?.percentDidChange(0.01, state: .ready, isTracking: scrollView.isTracking)
+            var offset = scrollView.contentOffset
+            let y = self!.heightOfcontentView
+            offset.y = -y - scrollView.top
 
-                UIView.animate(withDuration: 0.25, animations: {
-                    if let scrollView = self?.scrollView {
-                        self?.percentDidChange(1, state: .ready, isTracking: scrollView.isTracking)
-                        scrollView.contentOffset = offset
-                    }
-                }) { (Bool) in
-                    self?.state = .triggered
-                    self?.triggerRefresh()
+            self?.percentDidChange(0.01, state: .triggered, isTracking: scrollView.isTracking)
+
+            UIView.animate(withDuration: 0.25) {
+                if let scrollView = self?.scrollView {
+                    self?.percentDidChange(1, state: .triggered, isTracking: scrollView.isTracking)
+                    scrollView.contentOffset = offset
                 }
             }
         }
@@ -214,7 +220,7 @@ public class SFRefreshView: UIView, SFRefresh  {
 
                     // exec on next runloop
                     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                        guard self?.scrollView != nil else {
+                        guard self?.scrollView != nil, self?.state == .refreshing else {
                             return
                         }
 
