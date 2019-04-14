@@ -168,12 +168,12 @@ open class SFInfinitingView: UIView, SFRefresh {
         }
     }
 
-    func didInfinite() {
+    open func didInfinite() {
     }
 
-    func didFinish() {
+    open func didFinish() {
     }
 
-    func didReset() {
+    open func didReset() {
     }
 }

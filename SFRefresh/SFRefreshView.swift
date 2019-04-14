@@ -182,16 +182,16 @@ open class SFRefreshView: UIView, SFRefresh  {
         }
     }
 
-    public func percentDidChange(_ value: CGFloat, state: SFRefreshState, isTracking: Bool) {
+    open func percentDidChange(_ value: CGFloat, state: SFRefreshState, isTracking: Bool) {
     }
 
-    public func didRefresh() {
+    open func didRefresh() {
     }
 
-    public func didFinish() {
+    open func didFinish() {
     }
 
-    public func didReset() {
+    open func didReset() {
     }
 
     private func triggerRefresh() {
