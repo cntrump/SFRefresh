@@ -17,7 +17,7 @@ import UIKit
 
 fileprivate let contentOffsetKey: String = "contentOffset"
 
-public class SFInfinitingView: UIView, SFRefresh {
+open class SFInfinitingView: UIView, SFRefresh {
     @objc open var infinitingHandler: ((_ completionHandler: @escaping SFCompletionHandler) -> Void)?
     @objc open private(set) var contentView: UIView!
     @objc open var enable: Bool = false // disable infiniting by default
@@ -39,11 +39,11 @@ public class SFInfinitingView: UIView, SFRefresh {
         self.addSubview(contentView)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
 
         contentView.frame = self.bounds
@@ -73,7 +73,7 @@ public class SFInfinitingView: UIView, SFRefresh {
         KVOadded = false
     }
 
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard scrollView != nil && keyPath != nil && object != nil && change != nil else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return

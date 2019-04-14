@@ -18,7 +18,7 @@ import UIKit
 
 fileprivate let contentOffsetKey: String = "contentOffset"
 
-public class SFRefreshView: UIView, SFRefresh  {
+open class SFRefreshView: UIView, SFRefresh  {
     @objc open var keepPosition: Bool = false
     @objc open var refreshHandler: ((_ completionHandler: @escaping SFCompletionHandler) -> Void)?
     @objc open private(set) var contentView: UIView!
@@ -41,7 +41,7 @@ public class SFRefreshView: UIView, SFRefresh  {
         self.addSubview(contentView)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -51,7 +51,7 @@ public class SFRefreshView: UIView, SFRefresh  {
         }
     }
 
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
 
         contentView.frame = self.bounds
@@ -96,7 +96,7 @@ public class SFRefreshView: UIView, SFRefresh  {
         KVOadded = false
     }
 
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard scrollView != nil && keyPath != nil && object != nil && change != nil else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
