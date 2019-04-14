@@ -26,7 +26,7 @@ open class SFInfinitingView: UIView, SFRefresh {
     internal weak var scrollView: UIScrollView?
     private var KVOadded: Bool = false
     
-    var heightOfcontentView: CGFloat {
+    open var heightOfcontentView: CGFloat {
         get {
             return 50
         }

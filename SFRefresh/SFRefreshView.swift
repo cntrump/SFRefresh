@@ -34,7 +34,7 @@ open class SFRefreshView: UIView, SFRefresh  {
     private var KVOadded: Bool = false
     private var triggerTime: UInt64 = 0
 
-    @objc override init(frame: CGRect) {
+    @objc public override init(frame: CGRect) {
         super.init(frame: frame)
         isUserInteractionEnabled = false
         contentView = UIView(frame: self.bounds)
@@ -45,7 +45,7 @@ open class SFRefreshView: UIView, SFRefresh  {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var heightOfcontentView: CGFloat {
+    open var heightOfcontentView: CGFloat {
         get {
             return 50
         }
