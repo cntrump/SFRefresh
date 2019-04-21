@@ -42,7 +42,7 @@ public class LOTRefreshView: SFRefreshView {
         return aniPath
     }
 
-    override var heightOfcontentView: CGFloat {
+    override public var heightOfcontentView: CGFloat {
         get {
             return 104
         }
