@@ -135,7 +135,7 @@ open class SFInfinitingView: UIView, SFRefresh {
         let scrollDown = newValue.y > oldValue.y
 
         let refresing = scrollView!.SFrefreshView != nil && scrollView!.SFrefreshView?.state != .inactive
-        guard enable && scrollDown && state != .infiniting && state != .finished && !refresing else {
+        guard enable && !scrollView!.isTracking && scrollDown && state != .infiniting && state != .finished && !refresing else {
             return
         }
 
