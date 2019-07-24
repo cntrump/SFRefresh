@@ -30,7 +30,7 @@ open class SFRefreshView: UIView, SFRefresh  {
         }
     }
 
-    internal weak var scrollView: UIScrollView?
+    internal var scrollView: UIScrollView?
     private var KVOadded: Bool = false
     private var triggerTime: UInt64 = 0
 
@@ -93,6 +93,7 @@ open class SFRefreshView: UIView, SFRefresh  {
             scrollView.removeObserver(self, forKeyPath: contentOffsetKey, context: nil)
         }
 
+        scrollView = nil;
         KVOadded = false
     }
 

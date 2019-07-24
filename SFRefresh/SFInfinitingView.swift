@@ -23,7 +23,7 @@ open class SFInfinitingView: UIView, SFRefresh {
     @objc open var enable: Bool = false // disable infiniting by default
     @objc open private(set) var state: SFInfinitingState = .ready
 
-    internal weak var scrollView: UIScrollView?
+    internal var scrollView: UIScrollView?
     private var KVOadded: Bool = false
     
     open var heightOfcontentView: CGFloat {
@@ -70,6 +70,7 @@ open class SFInfinitingView: UIView, SFRefresh {
             scrollView.removeObserver(self, forKeyPath: contentOffsetKey, context: nil)
         }
 
+        scrollView = nil
         KVOadded = false
     }
 
