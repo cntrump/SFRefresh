@@ -55,10 +55,7 @@ open class SFInfinitingView: UIView, SFRefresh {
         }
 
         KVOadded = true
-
-        if let scrollView = scrollView {
-            scrollView.addObserver(self, forKeyPath: contentOffsetKey, options: [.new, .old], context: nil)
-        }
+        scrollView?.addObserver(self, forKeyPath: contentOffsetKey, options: [.new, .old], context: nil)
     }
 
     func removeRefreshKVO() {
@@ -66,10 +63,7 @@ open class SFInfinitingView: UIView, SFRefresh {
             return
         }
 
-        if let scrollView = scrollView {
-            scrollView.removeObserver(self, forKeyPath: contentOffsetKey, context: nil)
-        }
-
+        scrollView?.removeObserver(self, forKeyPath: contentOffsetKey, context: nil)
         scrollView = nil
         KVOadded = false
     }
