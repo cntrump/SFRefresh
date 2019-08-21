@@ -134,7 +134,8 @@ open class SFInfinitingView: UIView, SFRefresh {
             return
         }
 
-        let atBottom = scrollView!.contentSize.height - newValue.y <= scrollView!.frame.height
+        let threshold: CGFloat = self.frame.height
+        let atBottom = scrollView!.contentSize.height - newValue.y <= scrollView!.frame.height + threshold
         state = atBottom ? .triggered : .ready
     }
 
